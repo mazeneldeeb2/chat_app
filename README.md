@@ -1,8 +1,15 @@
 # chat_app
 
-A new Flutter project.
+A chat application made by Flutter
 
-## Getting Started
+features: 
+
+Implemention of firebase sdk in flutter project using pacakages firebase_core,  firebase_auth and firebase_storage.
+
+implemention of image picker and upload image to firebase the retrieve it.
+
+// TODO: push notification when new message being sent.
+## Getting Started 
 
 This project is a starting point for a Flutter application.
 
