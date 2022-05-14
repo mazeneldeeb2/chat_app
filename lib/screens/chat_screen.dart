@@ -1,5 +1,7 @@
+import 'package:chat_app/widgets/messages.dart';
+import 'package:chat_app/widgets/new_message.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -7,25 +9,47 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('chats/BazpaNIshntIOX75bvmU/messages')
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final documents = snapshot.data!.docs;
-          return ListView.builder(
-            itemBuilder: (context, index) => Container(
-              padding: const EdgeInsets.all(8),
-              child: Text(documents[index]["text"]),
+      appBar: AppBar(
+        title: const Text(
+          "Flutter Chat",
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: DropdownButton(
+                underline: const SizedBox(),
+                icon: const Icon(Icons.more_vert),
+                items: [
+                  DropdownMenuItem(
+                      value: 'logout',
+                      child: Row(
+                        children: const [
+                          Icon(
+                            Icons.exit_to_app,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Text("logout"),
+                        ],
+                      ))
+                ],
+                onChanged: (_) {
+                  FirebaseAuth.instance.signOut();
+                }),
+          ),
+        ],
+      ),
+      body: Container(
+        child: Column(
+          children: const [
+            Expanded(
+              child: Messages(),
             ),
-            itemCount: documents.length,
-          );
-        },
+            NewMessage(),
+          ],
+        ),
       ),
     );
   }
